@@ -3,6 +3,7 @@ require_relative './publicist.rb'
 require_relative './channel.rb'
 require_relative './broadcaster.rb'
 require_relative './slide_mgr.rb'
+require_relative './subscription_mgr.rb'
 require_relative './snitch.rb'
 require 'iterable'
 require 'pry'
@@ -102,12 +103,20 @@ Thread.new { pry }
 
 # TODO : Set up Subscription Manager to allow ws connections to
 # subscribe/unsubscribe to broadcasters
-subscription_mgr = nil
+sub_mgr = SubscriptionMgr.new
+sub_mgr.add_broadcaster 'iterable_demo', iterable_broadcaster
+
+# Need data validation before passing parcel on
+routes = {
+    'subscription' => ->(ws, parcel) { sub_mgr.manage ws.signature, parcel }
+}
+route = ->(ws, msg) { routes[msg['label']][ws, msg['parcel']] }
 
 EventMachine.run {
     EventMachine::WebSocket.start(host: '0.0.0.0', port: srv_opts['websocket']['port'], debug: false) do |ws|
-        ws.onopen { iterable_broadcaster.push ws }
-        ws.onmessage { |msg| ws.send(JSON.dump({label: 'msg', parcel: "Pong: #{msg}"})) }
-        ws.onclose { iterable_broadcaster.delete ws }
+        ws.onopen { sub_mgr.add_subscriber ws.signature, ws }
+        # Need exception handling for JSON.load
+        ws.onmessage { |msg| route[ws, JSON.load(msg)] }
+        ws.onclose { sub_mgr.remove_subscriber ws.signature }
     end
 }

@@ -204,6 +204,12 @@
         }), 1000);
       };
       return ws.onopen = function() {
+        ws.send(JSON.stringify({
+          label: 'subscription',
+          parcel: {
+            subscribe: ['iterable_demo']
+          }
+        }));
         return debug('connected...');
       };
     };

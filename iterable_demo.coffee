@@ -283,7 +283,12 @@ $(document).ready ->
             debug 'socket closed'
             setTimeout((-> phone_home(count + 1)), 1000)
 
-        ws.onopen = -> debug 'connected...'
+        ws.onopen = ->
+            ws.send JSON.stringify
+                label: 'subscription'
+                parcel:
+                    subscribe: ['iterable_demo']
+            debug 'connected...'
 
     phone_home()
 
