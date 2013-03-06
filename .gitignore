@@ -1,5 +1,5 @@
 simple/.sass-cache
 archive/
 srv_opts.json
-index.html
-ws.js
+*.html
+iterable_demo.js
