@@ -1,18 +1,9 @@
 $OPTS_FILE = 'srv_opts.json'
 
-rule '.svg' => '.svg.haml' do |t|
-    puts "Compiling #{t.source} => #{t.name}"
-    sh "haml #{t.source} #{t.name}"
-end
-
-rule '.html' => '.html.haml' do |t|
-    puts "Compiling #{t.source} => #{t.name}"
-    sh "haml --format html5 #{t.source} #{t.name}"
-end
-
 desc "Create '#{$OPTS_FILE}' with development settings if in doesn't yet exist"
-task :opts_init do
-    unless File.exists? $OPTS_FILE
+file $OPTS_FILE do |t|
+    unless File.exists? t.name
+        puts "Creating #{t.name}"
         dev_opts = <<EOS
 {
     "http": {
@@ -30,12 +21,13 @@ task :opts_init do
     "js_assets": "remote"
 }
 EOS
-        IO.write $OPTS_FILE, dev_opts
+        IO.write t.name, dev_opts
     end
 end
 
-desc "Update websocket host/port in 'iterable_demo.coffee' from '#{$OPTS_FILE}'"
-task opts_update: :opts_init do
+desc "Update websocket host/port in 'ws.coffee' from '#{$OPTS_FILE}'"
+file 'ws.coffee' => $OPTS_FILE do |t|
+    puts "Checking WebSocket url in #{t.name}"
     require 'json'
     ws_opts = (JSON.load IO.read $OPTS_FILE)['websocket']
     reg = %r{
@@ -50,19 +42,30 @@ task opts_update: :opts_init do
 
         \g<before>\g<host>:\g<port>
     }ix
-    iterable = IO.read 'iterable_demo.coffee'
-    m = reg.match iterable
+    ws = IO.read t.name
+    m = reg.match ws
     unless m and m['host'] == ws_opts['host'] and m['port'] == ws_opts['port'].to_s
-        iterable.gsub! %r{#{m['host']}:#{m['port']}}, "#{ws_opts['host']}:#{ws_opts['port']}"
-        puts 'Updating "iterable_demo.coffee"'
-        IO.write 'iterable_demo.coffee', iterable
+        ws.gsub! %r{#{m['host']}:#{m['port']}}, "#{ws_opts['host']}:#{ws_opts['port']}"
+        puts "Updating #{t.name}"
+        IO.write t.name, ws
     end
+end
+
+rule '.svg' => '.svg.haml' do |t|
+    puts "Compiling #{t.source} => #{t.name}"
+    sh "haml #{t.source} #{t.name}"
+end
+
+rule '.html' => '.html.haml' do |t|
+    puts "Compiling #{t.source} => #{t.name}"
+    sh "haml --format html5 #{t.source} #{t.name}"
 end
 
 desc 'Compile haml files'
 FileList['*.*.haml'].ext.each do |x|
-    multitask haml: x
+    task haml: x
 end
+file 'index.html' => $OPTS_FILE
 
 # Learnt of rake's rules (and copied some code) from
 # github.com/ngauthier/coffeescript-ruby-pipeline
@@ -76,8 +79,13 @@ FileList['*.coffee'].ext('js').each do |x|
     task coffee: x
 end
 
-task :sass do
-    sh "compass comp simple"
+rule(%r{^\w*/stylesheets/\w*\.css$} => (->(tn) { "#{tn.pathmap '%1d'}/sass/#{tn.pathmap '%n'}.sass" })) do |t|
+    sh "cd #{t.name.pathmap '%1d'} && compass comp sass/#{t.source.pathmap '%f'}"
+end
+
+desc 'Compile sass stylesheets'
+FileList['*/sass/*.sass'].each do |x|
+    task sass: x.pathmap('%1d/stylesheets/%n.css')
 end
 
 desc 'Compile all files'
@@ -89,5 +97,4 @@ task :server do
     sh 'ruby server.rb'
 end
 
-task default: [:opts_update, :comp, :server] do
-end
+task default: [:comp, :server]
