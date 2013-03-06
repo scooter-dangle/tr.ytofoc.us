@@ -36,71 +36,13 @@
             %use{:'xlink:href' => '#ruby-profile'}
 
     %h1 Tr.yToFoc.us
-    #slides
-      .slide.text{:hidden => true}
+    #pages
+      .page.text{:hidden => true}
         .boxy
           %svg.ace-card{:xmlns =>'http://w3.org/2000/svg', :height => '350px', :width => '250px'}
             %use{:'xlink:href' => '#ace-of-rubies'}
 
-      .slide.text{:hidden => true}
-        .boxy
-          .horiz-box
-            %svg.ace-card{:xmlns =>'http://w3.org/2000/svg', :height => '350px', :width => '250px'}
-              %use{:'xlink:href' => '#ace-of-rubies'}
-            .marge
-              %h1 Iterable Arrays in Ruby
-              %h1 Scott Steele
-              %h2 ScottLSteele@gmail.com
-              %h2 github.com/scooter-dangle/iterable
-
-      .slide.text{:hidden => true}
-        .boxy
-          %h1 MMXI
-
-      .slide.text{:hidden => true}
-        .boxy
-          %h1 MMXImproved
-
-      .slide.text{:hidden => true}
-        .boxy
-          .horiz-box
-            %img{:src => 'http://edgecase.com/images/neo_logo.png'}
-            .marge
-              %h1 Ruby Koans
-
-      .slide.text{:hidden => true}
-        .boxy
-          .horiz-box
-            %img{:src => 'http://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/6sided_dice.jpg/640px-6sided_dice.jpg'}
-            .marge
-              %h1 Ruby Koans
-
-      .slide.text{:hidden => true}
-        .boxy
-          :markdown
-            Zounds.
-            =======
-
-      .slide.text{:hidden => true}
-        .boxy
-          :markdown
-            Zounds.
-            =======
-            Core Competencies of Ruby:
-            -------------------------
-            * Goof off in vim
-
-      .slide.text{:hidden => true}
-        .boxy
-          :markdown
-            Zounds.
-            =======
-            Core Competencies of Ruby:
-            -------------------------
-            * Goof off in vim
-            * Say *anything* 5 times
-
-      .slide.text{:hidden => true}
+      .page.text{:hidden => true}
         .boxy
           :markdown
             Zounds.
@@ -111,42 +53,12 @@
             * Say *anything* 5 times
             * Sometimes win
 
-      .slide.text{:hidden => true}
+      .page.text{:hidden => true}
         .boxy
           :plain
             <code><svg xmlns='http://w3.org/2000/svg' height='1.5ex' width='1.25em'><g transform='scale(0.35)'><use xlink:href='#ruby-profile' /></g></svg>.should include($ALL_THE_THINGS)</code>
 
-      .slide.text{:hidden => true}
-        .boxy
-          .horiz-box
-            %img{:src => 'http://rubini.us/images/rubinius_logo_black_on_white.png'}
-            .marge
-              %h1 Rubinius
-
-
-      .slide.text{:hidden => true}
-        .boxy
-          %code
-            class Game
-            %br
-            \...
-            %br
-            end
-
-      .slide.text{:hidden => true}
-        .boxy
-          %code
-            class Game
-            %br
-            \...
-            %br
-            @players.cycle { |player| player.turn }
-            %br
-            \...
-            %br
-            end
-
-      .slide.text{:hidden => true}
+      .page.text{:hidden => true}
         .boxy
           %code
             class Game
@@ -163,32 +75,19 @@
             %br
             end
 
-      .slide.text{:hidden => true}
-        .boxy
-          - dim = 240.0
-          - gran = 20
-          - w1 = dim * ((gran / 2) - 1) / gran
-          - s1 = dim * ((gran / 2) + 1) / gran
-          - w2 = dim * (gran - 2) / gran
-          - s2 = dim / gran
-          %svg#empty-brackets{:xmlns => 'http://www.w3.org/2000/svg', :width => "#{dim}px", :height => "#{dim}px"}
-            %rect{:x => 0, :y => 0, :width => "#{w1}px", :height => '100%', :fill => '#444'}
-            %rect{:x => "#{s1}px", :y => 0, :width => "#{w1}px", :height => '100%', :fill => '#444'}
-            %rect{:x => "#{s2}px", :y => "#{s2}px", :width => "#{w2}px", :height => "#{w2}px", :fill => 'rgb(255, 255, 250)'}
-
-      .slide.text{:hidden => true}
+      .page.text{:hidden => true}
         .boxy
           .horiz-box
             %img{:src => 'http://upload.wikimedia.org/wikipedia/commons/3/3f/Wikipedia_logo_-Simbols_%28bis%29.png'}
             .marge{:style => "width: 350px"}
               %p An iterator may allow the container object to be modified without invalidating the iterator. For instance, once an iterator has advance beyond the first element it may be possible to insert additional elements into the beginning of the containter with predictable results.
 
-      .slide.text{:hidden => true}
+      .page.text{:hidden => true}
         .boxy
           %code require 'iterable'
           %br
           %code iter = IterableArray.new [*'a'..'g']
 
-      #charts.slide{:hidden => true}
+      #charts.page{:hidden => true}
         %svg#assets{:xmlns => 'http://www.w3.org/2000/svg', :width => 0, :height => 0}
           %defs

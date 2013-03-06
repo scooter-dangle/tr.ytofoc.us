@@ -44,10 +44,8 @@ body
     +rotateZ(-20deg)
     +box-shadow(rgb(25, 25, 25) 0.15px 1px 0.5px 0.5px, rgb(1, 1, 1) 0.15px 1px 4px 0.25px)
 
-#slides
-    .slide
-        &[hidden]
-            display: none
+.page[hidden]
+    display: none
 
 .slide.text
     font-size: 24pt
@@ -151,25 +149,6 @@ code
             background-color: $off-white
             position: relative
             z-index: 1
-
-/*
-    .demo_wrapper
-        margin: $default-spacing 0 $default-spacing -$default-spacing
-        height: $object-block-height + 2 * $default-spacing
-        position: relative
-        z-index: 1
-        &::before
-            // Needs to have same dimensions as .demo_object
-            content: ''
-            position: absolute
-            +border-radius(25%)
-            border-bottom: 0.5px solid black
-            +box-shadow
-            z-index: -1
-            top: 0
-            left: 20px - $default-spacing
-            right: 20px
-            bottom: -0.5px
 
 .methods
     +code-fonts
