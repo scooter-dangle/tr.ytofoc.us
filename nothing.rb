@@ -3,6 +3,10 @@ class Nothing
         @obj = obj
     end
 
+    def method _
+        ->(*_) { @obj }
+    end
+
     def method_missing *_
         @obj
     end
