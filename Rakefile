@@ -25,8 +25,8 @@ EOS
     end
 end
 
-desc "Update websocket host/port in 'ws.coffee' from '#{$OPTS_FILE}'"
-file 'ws.coffee' => $OPTS_FILE do |t|
+desc "Update websocket host/port in 'iterable_demo.coffee' from '#{$OPTS_FILE}'"
+file 'iterable_demo.coffee' => $OPTS_FILE do |t|
     puts "Checking WebSocket url in #{t.name}"
     require 'json'
     ws_opts = (JSON.load IO.read $OPTS_FILE)['websocket']
@@ -42,12 +42,12 @@ file 'ws.coffee' => $OPTS_FILE do |t|
 
         \g<before>\g<host>:\g<port>
     }ix
-    ws = IO.read t.name
-    m = reg.match ws
+    iterable_demo = IO.read t.name
+    m = reg.match iterable_demo
     unless m and m['host'] == ws_opts['host'] and m['port'] == ws_opts['port'].to_s
-        ws.gsub! %r{#{m['host']}:#{m['port']}}, "#{ws_opts['host']}:#{ws_opts['port']}"
+        iterable_demo.gsub! %r{#{m['host']}:#{m['port']}}, "#{ws_opts['host']}:#{ws_opts['port']}"
         puts "Updating #{t.name}"
-        IO.write t.name, ws
+        IO.write t.name, iterable_demo
     end
 end
 
