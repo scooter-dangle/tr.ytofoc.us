@@ -48,8 +48,8 @@ Thread.new {
 
 iterable_broadcaster = Broadcaster.new
 
-s = SlideMgr.new 19
-s.broadcaster = iterable_broadcaster
+# s = SlideMgr.new 4
+# s.broadcaster = iterable_broadcaster
 
 pub = Publicist.new
 pub.broadcaster = iterable_broadcaster
@@ -60,11 +60,7 @@ Guardianship.sourcification = :defensive
 
 iter = Guardianship.new IterableArray.new(arr.dup)
 
-call_reset = -> do
-    # No need to use JSON.dump here since that's what
-    # Broadcaster#formatter is for
-    iterable_broadcaster.broadcast label: 'reset', parcel: []
-end
+call_reset = -> { iterable_broadcaster.broadcast label: 'reset', parcel: [] }
 
 reset = -> do
     iter = Guardianship.new IterableArray.new(arr.dup)
@@ -76,7 +72,7 @@ reset = -> do
     iterable_broadcaster.clear_archives!
 
     iter.make_entrance
-    s.broadcast
+    # s.broadcast
 
     call_reset[]
 end
@@ -88,13 +84,9 @@ ba = -> do
     iter.each { |x| iter.index x }
 end
 
-ea = -> do
-    iter.each { |x| iter.delete x if x >= 'c' }
-end
+ea = -> do iter.each { |x| iter.delete x if x >= 'c' } end
 
-cy = -> do
-    iter.cycle(15) { |x| iter.swap! x, (iter.ward - [x]).sample }
-end
+cy = -> do iter.cycle(15) { |x| iter.swap! x, (iter.ward - [x]).sample } end
 
 # Hokay let's buckle-down and get serious
 reset[]

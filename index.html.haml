@@ -18,7 +18,7 @@
     %script{:src => '/iterable_demo.js'}
 
   %body
-    %svg#more_assets{:xmlns =>'http://w3.org/2000/svg', :height => '0', :width => '0', :hidden => true}
+    %svg#assets{:xmlns =>'http://w3.org/2000/svg', :height => '0', :width => '0', :hidden => true}
       %defs
         - ruby_red = '#ff0022'
         %svg#ruby-profile{:height => '59px', :width => '100px', :x => '0', :y => '0'}
@@ -89,5 +89,3 @@
           %code iter = IterableArray.new [*'a'..'g']
 
       #charts.page{:hidden => true}
-        %svg#assets{:xmlns => 'http://www.w3.org/2000/svg', :width => 0, :height => 0}
-          %defs

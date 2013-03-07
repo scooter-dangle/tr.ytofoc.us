@@ -1,14 +1,4 @@
 $(document).ready ->
-    abs_width  = 490
-    abs_height = 180
-    debugging = false
-
-    max = (x, y) -> if x > y then x else y
-    min = (x, y) -> if x < y then x else y
-    confine = (infimum, n, supremum) ->
-        n = max infimum, n
-        n = min n, supremum
-        n
 
     debug_count = 0
 
@@ -21,248 +11,265 @@ $(document).ready ->
             str = JSON.stringify str unless typeof str == 'string'
             $('#debug').append "<p>#{debug_count}: #{str}</p>"
 
-    colors = d3.scale.category20()
+    [update_queue, reset_queue] = do ->
+        abs_width  = 490
+        abs_height = 180
+        debugging = false
 
-    duration = 1000
-    standard_delay = duration / 5
+        max = (x, y) -> if x > y then x else y
+        min = (x, y) -> if x < y then x else y
+        confine = (n, infimum, supremum) ->
+            min (max n, infimum), supremum
 
-    update_data = (parcel) ->
-        # Should modify selection (svg) width and height here
-        w = 40
-        font_factor = 2 / 3
+        colors = d3.scale.category20()
 
-        # Add new objects (array elements) to be referenced elsewhere
-        catalogue = []
+        duration = 1000
+        standard_delay = duration / 5
 
-        for pkg in parcel
-            catalogue = catalogue.concat pkg['obj']
+        update_data = (parcel) ->
+            # Should modify selection (svg) width and height here
+            w = 40
+            font_factor = 2 / 3
 
-        elems = d3.select('svg#assets defs')
-            .selectAll('.elem')
-            # Need to ensure the following line isn't
-            # making tons of duplicate entries
-            .data(catalogue, (d) -> d)
-            .enter()
-            .append('svg')
-            .attr('id', (d) -> "elem_#{d}")
-            .classed('elem', true)
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('width', w)
-            .attr('height', w)
+            # Add new objects (array elements) to be referenced elsewhere
+            catalogue = []
 
-        elems.append('rect')
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('width', '100%')
-            .attr('height', '100%')
-            .attr('fill', (d) -> colors d)
+            for pkg in parcel
+                catalogue = catalogue.concat pkg['obj']
 
-        elems.append('text')
-            .attr('x', '50%')
-            .attr('y', '75%')
-            .attr('text-anchor', 'middle')
-            .attr('fill', 'white')
-            .attr('font-size', w * font_factor)
-            .attr('font-family', 'sans-serif')
-            .attr('font-style', 'bold')
-            .text((d) -> d)
+            elems = d3.select('#assets defs')
+                .selectAll('.elem')
+                # Need to ensure the following line isn't
+                # making tons of duplicate entries
+                .data(catalogue, (d) -> d)
+                .enter()
+                .append('svg')
+                .attr('id', (d) -> "iterable_elem_#{d}")
+                .classed('elem', true)
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('width', w)
+                .attr('height', w)
 
-        # Update actual charts
-        d3.select('#charts')
-            .classed('one-child', -> parcel.length == 1)
-            .classed('not-one-child', -> parcel.length != 1)
-            .selectAll('.chart')
-            .data(parcel, (d) -> d['name'])
-            .call(charts)
-            .select('.methods')
-            .selectAll('.method')
-            .data((d) -> d['methods'])
-            .call(methods)
+            elems.append('rect')
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('width', '100%')
+                .attr('height', '100%')
+                .attr('fill', (d) -> colors d)
 
-    charts = (selection) ->
-        enteror = selection
-            .enter()
-            .append('div')
-            .classed('chart', true)
+            elems.append('text')
+                .attr('x', '50%')
+                .attr('y', '75%')
+                .attr('text-anchor', 'middle')
+                .attr('fill', 'white')
+                .attr('font-size', w * font_factor)
+                .attr('font-family', 'sans-serif')
+                .attr('font-style', 'bold')
+                .text((d) -> d)
 
-        enteror.append('h1').append('span').append('div').text((d) -> d['name'])
+            # Update actual charts
+            d3.select('#charts')
+                .classed('one-child', -> parcel.length == 1)
+                .classed('not-one-child', -> parcel.length != 1)
+                .selectAll('.chart')
+                .data(parcel, (d) -> d['name'])
+                .call(charts)
+                .select('.methods')
+                .selectAll('.method')
+                .data((d) -> d['methods'])
+                .call(methods)
 
-        selection.exit().remove()
+        charts = (selection) ->
+            enteror = selection
+                .enter()
+                .append('div')
+                .classed('chart', true)
 
-        enteror
-            .append('div')
-            .classed('demo_wrapper', true)
-            .append('svg')
-            .classed('demo_object', true)
+            enteror.append('h1').append('span').append('div').text((d) -> d['name'])
 
-        enteror
-            .append('section')
-            .classed('methods', true)
+            selection.exit().remove()
 
-        selection
-            .select('.demo_object')
-            .each demo_object
+            enteror
+                .append('div')
+                .classed('demo_wrapper', true)
+                .append('svg')
+                .classed('demo_object', true)
 
-    demo_object = (datar) ->
-        selection = d3.select @
-        datar = datar['obj']
+            enteror
+                .append('section')
+                .classed('methods', true)
 
-        # Should modify selection (svg) width and height here
-        # w = abs_width / datar.length
-        # w = abs_width / 15
-        w = 40
-        font_factor = 2 / 3
+            selection
+                .select('.demo_object')
+                .each demo_object
 
-        main_transition = selection
-            .transition()
-            .duration(duration / 2)
-            .delay(standard_delay)
-            .attr('height', w)
+        demo_object = (datar) ->
+            selection = d3.select @
+            datar = datar['obj']
 
-        x = d3.scale
-            .ordinal()
-            .domain(datar)
-            .rangeBands([0, min abs_width, w * datar.length])
+            # Should modify selection (svg) width and height here
+            # w = abs_width / datar.length
+            # w = abs_width / 15
+            w = 40
+            font_factor = 2 / 3
 
-        joiner = selection
-            .selectAll('svg.mover')
-            .data(datar, (d) -> d)
+            main_transition = selection
+                .transition()
+                .duration(duration / 2)
+                .delay(standard_delay)
+                .attr('height', w)
 
-        joiner
-            .enter()
-            .append('svg')
-            .classed('mover', true)
-            .each((d) ->
-                d3.select(@).classed("elem_#{d}", true))
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('width', w)
-            .attr('height', w)
-            .append('use')
-            .attr('xlink:href', (d) -> "#elem_#{d}")
+            x = d3.scale
+                .ordinal()
+                .domain(datar)
+                .rangeBands([0, min abs_width, w * datar.length])
 
-        joiner.order()
+            joiner = selection
+                .selectAll('svg.mover')
+                .data(datar, (d) -> d)
 
-        group_transition = main_transition
-            .selectAll('svg.mover')
-            .transition()
-            .attr('x',  (d) -> x d)
-            .attr('y', 0)
+            joiner
+                .enter()
+                .append('svg')
+                .classed('mover', true)
+                .each((d) ->
+                    d3.select(@).classed("iterable_elem_#{d}", true))
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('width', w)
+                .attr('height', w)
+                .append('use')
+                .attr('xlink:href', (d) -> "#iterable_elem_#{d}")
 
-        joiner.exit()
-            .transition()
-            .duration(duration / 5)
-            .delay(standard_delay)
-            .ease('quad-in')
-            .attr('y', 750)
-            .remove()
+            joiner.order()
 
-    methods = (selection) ->
-        # Suuuuper messy right now!
-        # Ho no!
-        # So bad, sad, et al.
-        yield_width = '40px'
+            group_transition = main_transition
+                .selectAll('svg.mover')
+                .transition()
+                .attr('x',  (d) -> x d)
+                .attr('y', 0)
 
-        selection.exit()
-            .transition()
-            .duration(duration / 10)
-            .remove()
+            joiner.exit()
+                .transition()
+                .duration(duration / 5)
+                .delay(standard_delay)
+                .ease('quad-in')
+                .attr('y', 750)
+                .remove()
 
-        props = ['name', 'args', 'block', 'yield', 'result']
+        methods = (selection) ->
+            # Suuuuper messy right now!
+            # Ho no!
+            # So bad, sad, et al.
+            yield_width = '40px'
 
-        meths = selection.enter()
-            .append('div')
-            .classed('method', true)
+            selection.exit()
+                .transition()
+                .duration(duration / 10)
+                .remove()
 
-        meths
-            .append('span')
-            .classed('name', true)
-            .text((d) -> ":#{d['name']}")
+            props = ['name', 'args', 'block', 'yield', 'result']
 
-        meths
-            .append('span')
-            .classed('args', true)
-            .text((d) -> d['args'])
+            meths = selection.enter()
+                .append('div')
+                .classed('method', true)
 
-        meths
-            .append('span')
-            .classed('block', true)
-            .text((d) -> d['block'])
+            meths
+                .append('span')
+                .classed('name', true)
+                .text((d) -> ":#{d['name']}")
 
-        meths
-            .append('svg')
-            .attr('height', yield_width)
-            .attr('width', yield_width)
-            .classed('yield', true)
+            meths
+                .append('span')
+                .classed('args', true)
+                .text((d) -> d['args'])
 
-        meths
-            .append('span')
-            .classed('result', true)
-            .text((d) -> d['result'])
+            meths
+                .append('span')
+                .classed('block', true)
+                .text((d) -> d['block'])
 
-        selection
-            .select("span.name")
-            .text((d) -> "#{d['name']}")
+            meths
+                .append('svg')
+                .attr('height', yield_width)
+                .attr('width', yield_width)
+                .classed('yield', true)
 
-        selection
-            .select("span.args")
-            .text((d) -> "#{d['args']}")
+            meths
+                .append('span')
+                .classed('result', true)
+                .text((d) -> d['result'])
 
-        selection
-            .select("span.block")
-            .text((d) -> "#{d['block']}")
+            selection
+                .select("span.name")
+                .text((d) -> "#{d['name']}")
 
-        selection
-            .select("span.result")
-            .text((d) -> "#{d['result']}")
+            selection
+                .select("span.args")
+                .text((d) -> "#{d['args']}")
 
-        yielder = selection.select('svg.yield')
-            .selectAll('use')
-            .data(((d) -> [d['yield']]), (d) -> d)
+            selection
+                .select("span.block")
+                .text((d) -> "#{d['block']}")
 
-        yielder.exit().remove()
+            selection
+                .select("span.result")
+                .text((d) -> "#{d['result']}")
 
-        yielder.enter()
-            .append('use')
-            .attr('xlink:href', (d) -> "#elem_#{d}")
-            .attr('x', 0)
-            .attr('y', 0)
-            .each (d) ->
-                $(@)
-                    .parents('.chart')
-                    .find(".elem_#{d}")
-                    # Is there a more elegant 'flash-
-                    # this-element' method?
-                    .toggle('visible')
-                    .toggle('visible')
+            yielder = selection.select('svg.yield')
+                .selectAll('use')
+                .data(((d) -> [d['yield']]), (d) -> d)
 
-    queue = []
+            yielder.exit().remove()
 
-    reset_queue = -> queue = [ queue[0] ] if queue.length
+            yielder.enter()
+                .append('use')
+                .attr('xlink:href', (d) -> "#iterable_elem_#{d}")
+                .attr('x', 0)
+                .attr('y', 0)
+                .each (d) ->
+                    $(@)
+                        .parents('.chart')
+                        .find(".iterable_elem_#{d}")
+                        # Is there a more elegant 'flash-
+                        # this-element' method?
+                        .toggle('visible')
+                        .toggle('visible')
 
-    update_queue = (parcel) ->
-        queue.unshift parcel unless queue[0] == parcel
+        queue = []
 
-    setInterval((->
-        update_data queue.pop() if queue.length
-    ), duration * 2)
+        reset_queue = -> queue = [ queue[0] ] if queue.length
+
+        update_queue = (parcel) ->
+            queue.unshift parcel unless queue[0] == parcel
+
+        setInterval((->
+            update_data queue.pop() if queue.length
+        ), duration * 2)
+
+        [update_queue, reset_queue]
+
 
     # TODO: possibly use a d3 selection instead of
     # jquery
     slide = (num) ->
         num_slides = $('#slides .slide').size()
 
-        num = confine 1, num, num_slides
+        num = confine num, 1, num_slides
 
         d3.select('#slides')
             .selectAll('.slide')
             .attr('hidden', (d, i) ->
                 if i == num - 1 then null else true)
 
+    page = (name) ->
+        d3.selectAll('.page[^hidden]').attr('hidden', true)
+        d3.selectAll("##{name}").attr('hidden', null)
 
     routes =
         slide:  slide
+        page:   page
         update: update_queue
         msg:    debug
         reset:  reset_queue
@@ -292,3 +299,5 @@ $(document).ready ->
 
     phone_home()
 
+    # Set up page selection here
+    $('nav .iterable_demo')
