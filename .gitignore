@@ -1,5 +1,5 @@
 simple/.sass-cache
-simple/stylesheets
+simple/stylesheets/*
 archive/
 srv_opts.json
 *.html
