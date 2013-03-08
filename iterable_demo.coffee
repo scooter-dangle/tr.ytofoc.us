@@ -288,7 +288,7 @@ $(document).ready ->
 
         ws.onclose = ->
             debug 'socket closed'
-            setTimeout((-> phone_home(count + 1)), 1000)
+            setTimeout((-> phone_home count + 1), 1000)
 
         ws.onopen = ->
             ws.send JSON.stringify
