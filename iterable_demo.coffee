@@ -1,5 +1,14 @@
 $(document).ready ->
 
+    $('nav a, a#logo').each ->
+        target_id = $(@).attr 'href'
+        target = $ target_id
+        others = $ ".page:not(#{target_id})"
+        $(@).click ->
+            others.attr 'hidden', true
+            target.attr 'hidden', null
+
+
     debug_count = 0
 
     if debugging
@@ -11,7 +20,7 @@ $(document).ready ->
             str = JSON.stringify str unless typeof str == 'string'
             $('#debug').append "<p>#{debug_count}: #{str}</p>"
 
-    [update_queue, reset_queue] = do ->
+    [updateQueue, resetQueue] = do ->
         abs_width  = 490
         abs_height = 180
         debugging = false
@@ -26,7 +35,7 @@ $(document).ready ->
         duration = 1000
         standard_delay = duration / 5
 
-        update_data = (parcel) ->
+        updateData = (parcel) ->
             # Should modify selection (svg) width and height here
             w = 40
             font_factor = 2 / 3
@@ -239,40 +248,33 @@ $(document).ready ->
 
         queue = []
 
-        reset_queue = -> queue = [ queue[0] ] if queue.length
+        resetQueue = -> queue = [ queue[0] ] if queue.length
 
-        update_queue = (parcel) ->
+        updateQueue = (parcel) ->
             queue.unshift parcel unless queue[0] == parcel
 
         setInterval((->
-            update_data queue.pop() if queue.length
+            updateData queue.pop() if queue.length
         ), duration * 2)
 
-        [update_queue, reset_queue]
+        [updateQueue, resetQueue]
 
 
-    # TODO: possibly use a d3 selection instead of
-    # jquery
-    slide = (num) ->
-        num_slides = $('#slides .slide').size()
+    gotoSlide = (num) ->
+        num = confine num, 1, $('#slides .slide').size()
+        $('.slide:not([hidden])').attr 'hidden', true
+        $(".slide:nth-of-type(#{num})").attr 'hidden', null
 
-        num = confine num, 1, num_slides
-
-        d3.select('#slides')
-            .selectAll('.slide')
-            .attr('hidden', (d, i) ->
-                if i == num - 1 then null else true)
-
-    page = (name) ->
-        d3.selectAll('.page[^hidden]').attr('hidden', true)
-        d3.selectAll("##{name}").attr('hidden', null)
+    gotoPage = (name) ->
+        $('.page:not([hidden])').attr 'hidden', true
+        $("##{name}").attr 'hidden', null
 
     routes =
-        slide:  slide
-        page:   page
-        update: update_queue
+        slide:  gotoSlide
+        page:   gotoPage
+        update: updateQueue
         msg:    debug
-        reset:  reset_queue
+        reset:  resetQueue
         debug:  debug
 
     route = ({label, parcel}) -> routes[label] parcel
@@ -298,6 +300,3 @@ $(document).ready ->
             debug 'connected...'
 
     phone_home()
-
-    # Set up page selection here
-    $('nav .iterable_demo')
