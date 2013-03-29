@@ -15,6 +15,7 @@
       %link{:href => '/stylesheets/google-web-fonts.css', :rel => 'stylesheet'}
       %script{:src => '/jquery.js'}
       %script{:src => '/d3.js'}
+    %script{:src => '/application.js'}
     %script{:src => '/iterable_demo.js'}
 
   %body
@@ -38,12 +39,12 @@
     %a#logo{:href => '#home'}
       %h1 Tr.yToFoc.us
     #pages
-      .page.text{:hidden => true}
+      #home.page
         .boxy
           %svg.ace-card{:xmlns =>'http://w3.org/2000/svg', :height => '350px', :width => '250px'}
             %use{:'xlink:href' => '#ace-of-rubies'}
 
-      .page.text{:hidden => true}
+      .page{:hidden => true}
         .boxy
           :markdown
             Zounds.
@@ -54,12 +55,12 @@
             * Say *anything* 5 times
             * Sometimes win
 
-      .page.text{:hidden => true}
+      .page{:hidden => true}
         .boxy
           :plain
             <code><svg xmlns='http://w3.org/2000/svg' height='1.5ex' width='1.25em'><g transform='scale(0.35)'><use xlink:href='#ruby-profile' /></g></svg>.should include($ALL_THE_THINGS)</code>
 
-      .page.text{:hidden => true}
+      .page{:hidden => true}
         .boxy
           %code
             class Game
@@ -76,17 +77,20 @@
             %br
             end
 
-      .page.text{:hidden => true}
+      .page{:hidden => true}
         .boxy
           .horiz-box
             %img{:src => 'http://upload.wikimedia.org/wikipedia/commons/3/3f/Wikipedia_logo_-Simbols_%28bis%29.png'}
             .marge{:style => "width: 350px"}
               %p An iterator may allow the container object to be modified without invalidating the iterator. For instance, once an iterator has advance beyond the first element it may be possible to insert additional elements into the beginning of the containter with predictable results.
 
-      .page.text{:hidden => true}
+      .page{:hidden => true}
         .boxy
           %code require 'iterable'
           %br
           %code iter = IterableArray.new [*'a'..'g']
 
-      #charts.page{:hidden => true}
+      #iterable_demo.page{:hidden => true}
+      #ventures
+        %a{:href => '#iterable_demo'}Iterable Array (now in d3!)
+

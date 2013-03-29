@@ -30,6 +30,7 @@ Thread.new {
 
         '/index.html' => 'index.html',
         '/iterable_demo.js' => 'iterable_demo.js',
+        '/application.js'   => 'application.js',
     }
     routes.default = 'index.html'
 

@@ -25,15 +25,18 @@ EOS
     end
 end
 
-desc "Update websocket host/port in 'iterable_demo.coffee' from '#{$OPTS_FILE}'"
-file 'iterable_demo.coffee' => $OPTS_FILE do |t|
+desc "Update websocket host/port in 'application.coffee' from '#{$OPTS_FILE}'"
+file 'application.coffee' => $OPTS_FILE do |t|
     puts "Checking WebSocket url in #{t.name}"
     require 'json'
     ws_opts = (JSON.load IO.read $OPTS_FILE)['websocket']
     reg = %r{
         (?<before>
+            # phone_home function definition (initial line)
             (phone_home\s*=\s*.*->\n)
+            # Sundry blank lines
             (.*\n)*
+            # Line in phone_home declaring the new websocket
             (\s*\S*\s*=\s*new\s*WebSocket\s*('|")ws://)
         ){0}
         (?<domain> [[:word:]]*([#-.@][[:word:]]*)*){0}
@@ -42,12 +45,12 @@ file 'iterable_demo.coffee' => $OPTS_FILE do |t|
 
         \g<before>\g<host>:\g<port>
     }ix
-    iterable_demo = IO.read t.name
-    m = reg.match iterable_demo
+    application = IO.read t.name
+    m = reg.match application
     unless m and m['host'] == ws_opts['host'] and m['port'] == ws_opts['port'].to_s
-        iterable_demo.gsub! %r{#{m['host']}:#{m['port']}}, "#{ws_opts['host']}:#{ws_opts['port']}"
+        application.gsub! %r{#{m['host']}:#{m['port']}}, "#{ws_opts['host']}:#{ws_opts['port']}"
         puts "Updating #{t.name}"
-        IO.write t.name, iterable_demo
+        IO.write t.name, application
     end
 end
 
@@ -65,7 +68,7 @@ desc 'Compile haml files'
 FileList['*.*.haml'].ext.each do |x|
     task haml: x
 end
-file 'index.html' => $OPTS_FILE
+file 'index.html' => [$OPTS_FILE, 'index.html.haml']
 
 # Learnt of rake's rules (and copied some code) from
 # github.com/ngauthier/coffeescript-ruby-pipeline
