@@ -17,9 +17,13 @@ $default-text-color: rgb(33, 33, 33)
     color: darken($default-text-color, 90%)
     font-size: 8pt
 
+=normal-type
+    color: $default-text-color
+    font-size: 20pt
+
 =big-type
     color: lighten($default-text-color, 5%)
-    font-size: 26pt
+    font-size: 24pt
 
 =bigger-type
     color: lighten($default-text-color, 8.5%)
@@ -35,9 +39,22 @@ body
     width: 92%
     color: $default-text-color
     background-color: $off-white
-    > h1
-        font-family: 'Stint Ultra Condensed', sans-serif
-        font-size: 24pt
+
+a
+    text-decoration: none
+    &:hover, &:visited, &:active
+        text-decoration: none
+
+#logo
+    font-family: 'Stint Ultra Condensed', sans-serif
+    +big-type
+    &:hover, &:visited, &:active
+        +big-type
+
+#ventures a
+    +normal-type
+    &:hover, &:visited, &:active
+        +normal-type
 
 .ace-card
     +border-radius(5%)
@@ -48,7 +65,7 @@ body
     display: none
 
 .slide.text
-    font-size: 24pt
+    +big-type
     font-family: Amethysta, Georgia, serif
     +display-box
     +box-orient($orientation: vertical)
