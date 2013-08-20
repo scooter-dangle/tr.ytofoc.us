@@ -217,8 +217,7 @@ $(document).ready ->
                 .attr('x', 0)
                 .attr('y', 0)
                 .each (d) ->
-                    $(@)
-                        .parents('.chart')
+                    $(@).parents('.chart')
                         .find(".iterable_elem_#{d}")
                         # Is there a more elegant 'flash-
                         # this-element' method?
@@ -232,13 +231,12 @@ $(document).ready ->
         updateQueue = (parcel) ->
             queue.unshift parcel unless queue[0] == parcel
 
-        setInterval((->
-            updateData queue.pop() if queue.length
-        ), duration * 2)
+        setInterval((-> updateData queue.pop() if queue.length),
+            duration * 2)
 
         [updateQueue, resetQueue]
 
 
-    window.AppRoutes |= {}
+    window.AppRoutes ?= {}
     window.AppRoutes.update = updateQueue
     window.AppRoutes.reset =  resetQueue

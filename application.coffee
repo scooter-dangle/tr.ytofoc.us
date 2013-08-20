@@ -1,20 +1,24 @@
 $(document).ready ->
-    debug_count = 0
+    debugging = true
 
     if debugging
         $('body').append '<div id="debug"><h1>Debug</h1></div>'
 
-    debug = (str) ->
-        if debugging
+    if debugging
+        debug_count = 0
+        debug = (str) ->
             debug_count = debug_count + 1
             str = JSON.stringify str unless typeof str == 'string'
             $('#debug').append "<p>#{debug_count}: #{str}</p>"
+    else
+        debug = (str) -> # Do nothing
 
     $('#ventures a, a#logo').each ->
         target_id = $(@).attr 'href'
         target = $ target_id
         others = $ ".page:not(#{target_id})"
-        $(@).click ->
+        $(@).click () ->
+            debug "#{@} clicked"
             others.attr 'hidden', true
             target.attr 'hidden', null
 
@@ -27,7 +31,7 @@ $(document).ready ->
         $('.page:not([hidden])').attr 'hidden', true
         $("##{name}").attr 'hidden', null
 
-    window.AppRoutes |= {}
+    window.AppRoutes ?= {}
     window.AppRoutes.slide = gotoSlide
     window.AppRoutes.page  = gotoPage
     window.AppRoutes.msg   = debug

@@ -44,12 +44,6 @@
           %svg.ace-card{:xmlns =>'http://w3.org/2000/svg', :height => '350px', :width => '250px'}
             %use{:'xlink:href' => '#ace-of-rubies'}
 
-      .page{:hidden => true}
-        .boxy
-          %code require 'iterable'
-          %br
-          %code iter = IterableArray.new [*'a'..'g']
-
       #iterable_demo.page{:hidden => true}
       #ventures
         %a{:href => '#iterable_demo'}Iterable Array (now in d3!)
