@@ -1,7 +1,4 @@
 simple/.sass-cache
 simple/stylesheets/*
-archive/
 srv_opts.json
-*.html
-iterable_demo.js
-application.js
+build
