@@ -1,0 +1,50 @@
+!!!5
+
+%html
+  %head
+    %title Tr.yToFoc.us
+    %link{:href => '/stylesheets/screen.css', :media => 'screen, projection', :rel => 'stylesheet'}
+    %link{:href => '/stylesheets/print.css', :media => 'print', :rel => 'stylesheet'}
+    - require 'json'
+    - srv_opts = JSON.load IO.read('srv_opts.json')
+    - if srv_opts['js_assets'] == 'remote'
+      %link{:href => 'http://fonts.googleapis.com/css?family=Amethysta|Cabin|Stint+Ultra+Condensed'}
+      %script{:src => 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js'}
+      %script{:src => 'http://d3js.org/d3.v3.min.js'}
+    - if srv_opts['js_assets'] == 'local'
+      %link{:href => '/stylesheets/google-web-fonts.css', :rel => 'stylesheet'}
+      %script{:src => '/jquery.js'}
+      %script{:src => '/d3.js'}
+    %script{:src => '/application.js'}
+    %script{:src => '/iterable_demo.js'}
+
+  %body
+    %svg#assets{:xmlns =>'http://w3.org/2000/svg', :height => '0', :width => '0', :hidden => true}
+      %defs
+        - ruby_red = '#ff0022'
+        %svg#ruby-profile{:height => '59px', :width => '100px', :x => '0', :y => '0'}
+          %path{:d => 'm 12,0 -12,12 50,47 50,-47 -12,-12 z', :fill => ruby_red }
+        %svg#a-over-ruby{:height => "#{181 + 59}px", :width => '100px'}
+          %text{:x => '50px', :y => '141px', :fill => ruby_red, :'font-size' => '202', :'text-anchor' => 'middle', :'font-family' => "'Stint Ultra Condensed', sans-serif"} A
+          %svg{:height => '59px', :width => '100px', :x => '0', :y => '181px'}
+            %use{:'xlink:href' => '#ruby-profile'}
+        %svg#ace-of-rubies{:height => '350px', :width => '250px'}
+          %g
+            %use{:'xlink:href' => '#a-over-ruby', :transform => "translate(7, 7) scale(0.33)"}
+          %g
+            %use{:'xlink:href' => '#a-over-ruby', :transform => "translate(243, 343) rotate(180) scale(0.33)"}
+          %g{:transform => "translate(62.5, 145) scale(1.25)"}
+            %use{:'xlink:href' => '#ruby-profile'}
+
+    %a#logo{:href => '#home'}
+      %h1 Tr.yToFoc.us
+    #pages
+      #home.page
+        .boxy
+          %svg.ace-card{:xmlns =>'http://w3.org/2000/svg', :height => '350px', :width => '250px'}
+            %use{:'xlink:href' => '#ace-of-rubies'}
+
+      #iterable_demo.page{:hidden => true}
+      #ventures
+        %a{:href => '#iterable_demo'}Iterable Array (now in d3!)
+

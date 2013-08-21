@@ -1,15 +1,20 @@
-# A sample Gemfile
-source "https://rubygems.org"
+# If you have OpenSSL installed, we recommend updating
+# the following line to use "https"
+source 'https://rubygems.org'
 
-gem 'json', '~> 1.7.5'
-gem 'net-http-server', '~> 0.2.2'
-gem 'pry', '~> 0.9.10'
-gem 'em-websocket', '0.3.8'
-gem 'sourcify', '0.6.0.rc4', :git => 'git://github.com/ngty/sourcify.git'
-gem 'iterable', '~> 0.0.6.pre'
+gem "middleman", "~>3.1.4"
 
-group :development do
-  gem 'compass', '~> 0.12.2'
-  gem 'haml', '~> 3.1.6'
-  gem 'coffee-script', '~> 2.2.0'
+# Live-reloading plugin
+gem "middleman-livereload", "~> 3.1.0"
+
+# For faster file watcher updates on Windows:
+gem "wdm", "~> 0.1.0", :platforms => [:mswin, :mingw]
+
+# Cross-templating language block fix for Ruby 1.8
+platforms :mri_18 do
+  gem "ruby18_source_location"
 end
+
+gem 'stylus'
+
+gem 'slim', '~>2.0.1'

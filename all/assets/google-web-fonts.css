@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Amethysta';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Amethysta'), local('Amethysta-Regular'), url(Amethysta.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cabin';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Cabin Regular'), local('Cabin-Regular'), url(Cabin.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Stint Ultra Condensed';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Stint Ultra Condensed'), local('StintUltraCondensed-Regular'), url(Stint.ttf) format('truetype');
+}
