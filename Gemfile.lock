@@ -89,7 +89,7 @@ GEM
     sprockets-sass (1.0.1)
       sprockets (~> 2.0)
       tilt (~> 1.1)
-    stylus (0.7.2)
+    stylus (1.0.0.beta)
       execjs
       stylus-source
     stylus-source (0.34.1)
@@ -108,5 +108,5 @@ DEPENDENCIES
   middleman-livereload (~> 3.1.0)
   ruby18_source_location
   slim (~> 2.0.1)
-  stylus
+  stylus (~> 1.0.0.beta)
   wdm (~> 0.1.0)

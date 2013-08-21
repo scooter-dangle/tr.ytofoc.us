@@ -15,6 +15,6 @@ platforms :mri_18 do
   gem "ruby18_source_location"
 end
 
-gem 'stylus'
+gem 'stylus', '~>1.0.0.beta'
 
 gem 'slim', '~>2.0.1'

@@ -53,8 +53,13 @@ set :js_dir, 'javascripts'
 
 set :images_dir, 'images'
 
+# Must run `npm install -g nib` for this to work
+# (Possibly also mocha and stylus, but not sure)
+Stylus.use :nib
+
 # Build-specific configuration
 configure :build do
+
   # For example, change the Compass output style for deployment
   # activate :minify_css
 
