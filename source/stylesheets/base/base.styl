@@ -4,8 +4,12 @@
 $default-text-color = rgb(33, 33, 33)
 
 $tiny-type()
-  color: darken($default-text-color, 90%)
-  font-size: 8pt
+  color: darken($default-text-color, 80%)
+  font-size: 12pt
+
+$small-type()
+  color: darken($default-text-color, 40%)
+  font-size: 16pt
 
 $normal-type()
   color: $default-text-color
@@ -13,14 +17,21 @@ $normal-type()
 
 $big-type()
   color: lighten($default-text-color, 5%)
-  font-size: 24pt
+  font-size: 28pt
 
 $bigger-type()
   color: lighten($default-text-color, 8.5%)
-  font-size: 32pt
+  font-size: 42pt
+
+$biggest-type()
+  color: lighten($default-text-color, 10%)
+  font-size: 58pt
 
 $code-fonts()
   font-family: Monaco, Consolas, monospace
+
+body
+  $normal-type()
 
 // miscellaneous
 [hidden]
