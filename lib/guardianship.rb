@@ -75,10 +75,10 @@ class Guardianship
     def self.get_source block
         case sourcification
         when :full
-            block.to_source
+            block.to_source[/\A(proc ){,1}([[:print:][:cntrl:]]*)\z/, 2]
         when :defensive
             begin
-                block.to_source
+                block.to_source[/\A(proc ){,1}([[:print:][:cntrl:]]*)\z/, 2]
             # Super clobbery
             rescue Exception => e
                 "Block source unavailable"

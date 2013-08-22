@@ -149,6 +149,18 @@ $(document).ready ->
                 .attr('y', 750)
                 .remove()
 
+        methods_helper = (orig_selection, entered_selection, name) ->
+            entered_selection
+                .append('span')
+                .classed(name, true)
+                .classed('empty', (d) -> not d[name]?)
+                .text((d) -> d[name])
+
+            orig_selection
+                .select("span.#{name}")
+                .classed('empty', (d) -> not d[name]?)
+                .text((d) -> "#{d[name]}")
+
         methods = (selection) ->
             # Suuuuper messy right now!
             # Ho no!
@@ -166,49 +178,19 @@ $(document).ready ->
                 .append('div')
                 .classed('method', true)
 
-            meths
-                .append('span')
-                .classed('name', true)
-                .text((d) -> ":#{d['name']}")
-
-            meths
-                .append('span')
-                .classed('args', true)
-                .text((d) -> d['args'])
-
-            meths
-                .append('span')
-                .classed('block', true)
-                .text((d) -> d['block'])
+            methods_helper selection, meths, name for name in props[0..2]
 
             meths
                 .append('svg')
                 .attr('height', yield_width)
                 .attr('width', yield_width)
                 .classed('yield', true)
+                .classed('empty', (d) -> not d.yield?)
 
-            meths
-                .append('span')
-                .classed('result', true)
-                .text((d) -> d['result'])
-
-            selection
-                .select("span.name")
-                .text((d) -> "#{d['name']}")
-
-            selection
-                .select("span.args")
-                .text((d) -> "#{d['args']}")
-
-            selection
-                .select("span.block")
-                .text((d) -> "#{d['block']}")
-
-            selection
-                .select("span.result")
-                .text((d) -> "#{d['result']}")
+            methods_helper selection, meths, 'result'
 
             yielder = selection.select('svg.yield')
+                .classed('empty', (d) -> not d.yield?)
                 .selectAll('use')
                 .data(((d) -> [d['yield']]), (d) -> d)
 

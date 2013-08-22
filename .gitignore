@@ -2,3 +2,4 @@ simple/.sass-cache
 simple/stylesheets/*
 srv_opts.json
 build
+*.swp
