@@ -5,33 +5,53 @@ $default-text-color = rgb(33, 33, 33)
 
 $tiny-type()
   color: darken($default-text-color, 80%)
-  font-size: 12pt
+  font-size: (14/22)rem
+  font-weight: 600
 
 $small-type()
   color: darken($default-text-color, 40%)
-  font-size: 16pt
+  font-size: (18/22)rem
+  font-weight: 500
 
 $normal-type()
   color: $default-text-color
-  font-size: 20pt
+  font-size: 1rem
+  font-weight: 400
 
 $big-type()
-  color: lighten($default-text-color, 5%)
-  font-size: 28pt
+  color: lighten($default-text-color, 6%)
+  font-size: (26/22)rem
+  font-weight: 300
 
 $bigger-type()
-  color: lighten($default-text-color, 8.5%)
-  font-size: 42pt
+  color: lighten($default-text-color, 9%)
+  font-size: (34/22)rem
+  font-weight: 200
 
 $biggest-type()
-  color: lighten($default-text-color, 10%)
-  font-size: 58pt
+  color: lighten($default-text-color, 12%)
+  font-size: (52/22)rem
+  font-weight: 100
 
 $code-fonts()
   font-family: Monaco, Consolas, monospace
 
+html
+  font-size: 28px
+
 body
   $normal-type()
+  font-family: Amethysta, Georgia, serif
+
+h1, h2
+  font-family: Cabin, Helvetica, Arial, sans-serif
+
+h1
+  $bigger-type()
+
+h2
+  line-height: 1.75
+  $big-type()
 
 // miscellaneous
 [hidden]

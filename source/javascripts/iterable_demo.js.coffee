@@ -153,12 +153,12 @@ $(document).ready ->
             entered_selection
                 .append('span')
                 .classed(name, true)
-                .classed('empty', (d) -> not d[name]?)
+                .classed('is-empty', (d) -> not d[name]?)
                 .text((d) -> d[name])
 
             orig_selection
                 .select("span.#{name}")
-                .classed('empty', (d) -> not d[name]?)
+                .classed('is-empty', (d) -> not d[name]?)
                 .text((d) -> "#{d[name]}")
 
         methods = (selection) ->
@@ -185,12 +185,12 @@ $(document).ready ->
                 .attr('height', yield_width)
                 .attr('width', yield_width)
                 .classed('yield', true)
-                .classed('empty', (d) -> not d.yield?)
+                .classed('is-empty', (d) -> not d.yield?)
 
             methods_helper selection, meths, 'result'
 
             yielder = selection.select('svg.yield')
-                .classed('empty', (d) -> not d.yield?)
+                .classed('is-empty', (d) -> not d.yield?)
                 .selectAll('use')
                 .data(((d) -> [d['yield']]), (d) -> d)
 

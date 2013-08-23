@@ -4,16 +4,13 @@
   $small-type()
   $code-fonts()
 
-  .method
-    padding: $default-spacing
-    margin: $default-spacing
-    .args:not(:empty)
-      &::before
-        content: '('
-      &::after
-        content: ')'
-    .result:not(:empty)
-      &::before
-        content: '# => '
-    .empty
-      display: none
+  .args:not(:empty)
+    &::before
+      content: '('
+    &::after
+      content: ')'
+  .result:not(:empty)
+    &::before
+      content: '# => '
+  .is-empty
+    display: none
