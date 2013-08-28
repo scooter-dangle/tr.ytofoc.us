@@ -23,6 +23,6 @@
   %body
     %a#logo{href: '/'}Tr.yToFoc.us
     %nav#ventures
-      %a{href: '/iterable.html'}Iterable Array (now in d3!)
+      = link_to 'iterable (now in d3!)', 'iterable.html'
     = yield
     = render_partial 'footer'

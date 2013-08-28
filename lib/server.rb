@@ -13,40 +13,6 @@ require 'json'
 
 srv_opts = JSON.load IO.read 'srv_opts.json'
 
-#Thread.new {
-#
-#    routes = {
-#        '/jquery.js' => 'assets/jquery.js',
-#        '/stylesheets/google-web-fonts.css' => 'assets/google-web-fonts.css',
-#        '/stylesheets/Amethysta.ttf' => 'assets/Amethysta.ttf',
-#        '/stylesheets/Cabin.ttf' => 'assets/Cabin.ttf',
-#        '/stylesheets/Stint.ttf' => 'assets/Stint.ttf',
-#        '/d3.js' => 'assets/d3.v2.min.js',
-#
-#        '/stylesheets/screen.css' => 'simple/stylesheets/screen.css',
-#        '/stylesheets/print.css' => 'simple/stylesheets/print.css',
-#
-#        '/logo.svg' => 'logo.svg',
-#
-#        '/index.html' => 'index.html',
-#        '/iterable_demo.js' => 'iterable_demo.js',
-#        '/application.js'   => 'application.js',
-#    }
-#    routes.default = 'index.html'
-#
-#    Net::HTTP::Server.run(port: srv_opts['http']['port']) do |request, stream|
-#        # print "Here's the request:\t"
-#        # print request[:uri][:path].to_str, ?\n
-#        # print "Preparing response\n"
-#        response = IO.read routes[request[:uri][:path].to_str]
-#        # print "Response ready\n"
-#        [ 200,
-#        # {'Content-Type' => 'text/html'},
-#          {},
-#          [response] ]
-#    end
-#}
-
 iterable_broadcaster = Broadcaster.new
 
 # s = SlideMgr.new 4
@@ -65,16 +31,11 @@ call_reset = -> { iterable_broadcaster.broadcast label: 'reset', parcel: [] }
 
 reset = -> do
     iter = Guardianship.new IterableArray.new(arr.dup)
-
     iter.stage_name = 'iter'
-
     iter.publicist = pub
-
     iterable_broadcaster.clear_archives!
-
     iter.make_entrance
     # s.broadcast
-
     call_reset[]
 end
 
@@ -86,7 +47,6 @@ ba = -> do
 end
 
 ea = -> do iter.each { |x| iter.delete x if x >= 'c' } end
-
 cy = -> do iter.cycle(15) { |x| iter.swap! x, (iter.ward - [x]).sample } end
 
 # Hokay let's buckle-down and get serious

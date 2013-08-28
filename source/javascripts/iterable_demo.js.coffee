@@ -74,21 +74,21 @@ $(document).ready ->
         charts = (selection) ->
             enteror = selection
                 .enter()
-                .append('div')
+                .append('figure')
                 .classed('chart', true)
 
-            enteror.append('h1').append('span').append('div').text((d) -> d['name'])
+            enteror.append('figure-caption').append('h2').text ({ name }) -> name
 
             selection.exit().remove()
 
             enteror
-                .append('div')
+                .append('figure')
                 .classed('demo_wrapper', true)
                 .append('svg')
                 .classed('demo_object', true)
 
             enteror
-                .append('section')
+                .append('figure')
                 .classed('methods', true)
 
             selection
@@ -178,21 +178,49 @@ $(document).ready ->
                 .append('div')
                 .classed('method', true)
 
-            methods_helper selection, meths, name for name in props[0..2]
+            methods_helper selection, meths, name for name in props[0..1]
 
             meths
+                .append('span')
+                .classed('block', true)
+                .classed('is-empty', (d) -> not d['block']?)
+                .html ({ block: out }) ->
+                    if out?.match /\n/
+                        out = out.replace /\n/, '<br><pre class="code">'
+                        out += '</pre>'
+                    out
+
+
+            selection
+                .select("span.#{'block'}")
+                .classed('is-empty', (d) -> not d['block']?)
+                .html ({ block: out }) ->
+                    if out?.match /\n/
+                        out = out.replace /\n/, '<br><pre class="code">'
+                        out += '</pre>'
+                    out
+
+            meths
+                .append('figure')
+                .classed('is-empty', (d) -> not d.yield?)
+                .classed('yield', true)
                 .append('svg')
                 .attr('height', yield_width)
                 .attr('width', yield_width)
                 .classed('yield', true)
-                .classed('is-empty', (d) -> not d.yield?)
+
+            meths.select('figure.yield')
+                .append('figcaption')
+                .text 'item yielded'
 
             methods_helper selection, meths, 'result'
 
-            yielder = selection.select('svg.yield')
+            yielder = selection
+                .select('figure.yield')
                 .classed('is-empty', (d) -> not d.yield?)
+                .select('svg.yield')
                 .selectAll('use')
-                .data(((d) -> [d['yield']]), (d) -> d)
+                .data((({ yield: yielded }) -> [yielded]), (d) -> d)
 
             yielder.exit().remove()
 
@@ -224,4 +252,4 @@ $(document).ready ->
 
     window.AppRoutes ?= {}
     window.AppRoutes.update = updateQueue
-    window.AppRoutes.reset =  resetQueue
+    window.AppRoutes.reset  = resetQueue

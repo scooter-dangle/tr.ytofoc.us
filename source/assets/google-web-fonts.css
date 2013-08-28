@@ -1,8 +1,16 @@
+/*
 @font-face {
   font-family: 'Amethysta';
   font-style: normal;
   font-weight: 400;
   src: local('Amethysta'), local('Amethysta-Regular'), url(Amethysta.ttf) format('truetype');
+}
+*/
+@font-face {
+  font-family: 'Amethysta';
+  font-style: normal;
+  font-weight: 400;
+  src: url(Amethysta-Regular.svg#Amethysta-Regular) format('svg');
 }
 @font-face {
   font-family: 'Cabin';

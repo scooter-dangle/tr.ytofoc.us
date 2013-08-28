@@ -2,6 +2,9 @@ script src='/javascripts/iterable_demo.js'
 svg#assets hidden=true
   defs
 
-#iterable_demo
+.flex-container
+  #iterable_demo
 
-p = lorem.paragraphs 3
+  article#narrative
+    - 3.times do
+      p = lorem.paragraph
