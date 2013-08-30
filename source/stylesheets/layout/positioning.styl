@@ -1,15 +1,21 @@
 // positioning
 
-$default-spacing = 5px
+$default-spacing = 10px
 
 body
   margin-left: 7%
   margin-right: @margin-left
 
 .flex-container
-  display: flex
+  display(flex)
+
+.flex-child
+  flex(1)
+
 #iterable_demo
   width: 120rem
+  padding-right: $default-spacing
 
-//article#narrative
+article#narrative
+  padding-left: $default-spacing
 

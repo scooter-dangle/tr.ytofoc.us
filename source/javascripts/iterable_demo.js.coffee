@@ -55,7 +55,7 @@ $(document).ready ->
                 .attr('text-anchor', 'middle')
                 .attr('fill', 'white')
                 .attr('font-size', w * font_factor)
-                .attr('font-family', 'sans-serif')
+                .attr('font-family', 'Cabin, sans-serif')
                 .attr('font-style', 'bold')
                 .text((d) -> d)
 
