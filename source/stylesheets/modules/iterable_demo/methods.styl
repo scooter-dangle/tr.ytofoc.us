@@ -15,7 +15,17 @@
   .is-empty
     display: none
 
-.yield figcaption
-  font-family: Amethysta, Georgia, serif
-  font-style: italic
+.yield:not(:empty)
+  &::before
+    content: 'element yielded to block'
+    font-family: Amethysta, Georgia, serif
+    font-style: italic
+    $small-type()
+    display: block
+figure.yield, .method
+  border-top: 2px solid gray
+  padding-top: $default-spacing
+
+.method/*, .method span:last-of-type*/
+  padding-bottom: $default-spacing
 

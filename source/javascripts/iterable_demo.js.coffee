@@ -77,7 +77,8 @@ $(document).ready ->
                 .append('figure')
                 .classed('chart', true)
 
-            enteror.append('figure-caption').append('h2').text ({ name }) -> name
+            # Trying out figure.yield::before instead of manually adding text
+            #enteror.append('figure-caption').append('h2').text ({ name }) -> name
 
             selection.exit().remove()
 
@@ -209,9 +210,10 @@ $(document).ready ->
                 .attr('width', yield_width)
                 .classed('yield', true)
 
-            meths.select('figure.yield')
-                .append('figcaption')
-                .text 'item yielded'
+            # Trying out figure.yield::before instead of manually adding text
+            #meths.select('figure.yield')
+                #.append('figcaption')
+                #.text 'item yielded'
 
             methods_helper selection, meths, 'result'
 
